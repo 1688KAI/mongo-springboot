@@ -13,7 +13,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 @SpringBootTest
-@SelfLog
 class MongoSpringbootApplicationTests {
 
 
@@ -25,25 +24,26 @@ class MongoSpringbootApplicationTests {
 
         Person p = new Person("Joe", 34);
 
+        
         // 插入文档
         mongoOps.insert(p);
-        log.info("Insert: " + p);
+        System.out.println("Insert: " + p);
 
         // 查询文档
         p = mongoOps.findById(p.getId(), Person.class);
-        log.info("Found: " + p);
+        System.out.println("Found: " + p);
 
         // 更新文档
         mongoOps.updateFirst(query(where("name").is("Joe")), update("age", 35), Person.class);
         p = mongoOps.findOne(query(where("name").is("Joe")), Person.class);
-        log.info("Updated: " + p);
+        System.out.println("Updated: " + p);
 
         // 删除文档
         mongoOps.remove(p);
 
         // Check that deletion worked
         List<Person> people = mongoOps.findAll(Person.class);
-        log.info("Number of people = : " + people.size());
+        System.out.println("Number of people = : " + people.size());
         mongoOps.dropCollection(Person.class);
     }
 
